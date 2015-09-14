@@ -7,9 +7,23 @@ from DoubleLinkedList import *
 class Cache(object):
     def __init__(self, N):
         self.N = N      #Tamano de cache
-        self.M = 32749
-        #self.M = 13
+        self.M = 13
+        # El tamanio de la tabla Hash es seleccionado de acuerdo al numero de entradas ingresado... Y este tamanio seleccionado
+        # es primo para disminuir la cantidad de colisiones
+        if self.N <= 155:
+            self.M = 31
+        elif self.N <= 1255:
+            self.M = 251
+        elif self.N <= 10195:
+            self.M = 2039
+        elif self.N <= 163745:
+            self.M = 65521
+        elif self.N <= 655355:
+            self.M = 262139
+        else:
+            self.M = 524287
 
+    #Implementacion de politica de reemplazo CLOCK por ***Cesar San Lucas***
     def politicaClock(self, file):
         pageFaults = 0
         clockHand = 0
