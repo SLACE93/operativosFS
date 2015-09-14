@@ -61,7 +61,7 @@ class Cache(object):
                         location[value].setRefBit(1)
         print "Page Faults:  " + " " + str(pageFaults)
 
-    # Implementación de política de reemplazo LRU  por ***HERNAN ULLON***
+    # Implementacion de politica de reemplazo LRU  por ***HERNAN ULLON***
     def politicaLRU(self, file):
         location = DoubleLinkedList()
         pageFaults = 0
@@ -71,3 +71,41 @@ class Cache(object):
         totalLineas = 0
 
         for line in file:
+            totalLineas += 1
+            line = line.rstrip('\n')
+            if llena:
+                sMH = StringMH(line)
+                value = hashTable.getValue(sMH)
+                if value is None:
+                    pageFaults = pageFaults + 1
+                    firstNodeData = location.removeFirstNode()
+                    hashTable.deleteKey(firstNodeData)
+                    refNode = location.append(sMH)
+                    hashTable.putKeyValue(sMH, refNode)
+                else:
+                    location.remove(value)
+                    refNode = location.append(sMH)
+                    hashTable.updateValue(sMH, refNode)
+            else:
+                sMH = StringMH(line)
+                value = hashTable.getValue(sMH)
+                if value is None:
+                    pageFaults = pageFaults + 1
+                    refNode = location.append(sMH)
+                    hashTable.putKeyValue(sMH, refNode)
+                    indice = indice + 1
+                    if indice >= self.N:
+                        llena = True
+                else:
+                    location.remove(value)
+                    refNode = location.append(sMH)
+                    hashTable.updateValue(sMH, refNode)
+
+        missRate = 100*(float(pageFaults)/totalLineas)
+        missWarm = 100*(float(pageFaults - self.N)/(totalLineas-self.N))
+        mW = pageFaults - self.N
+        print "Evaluando una cache LRU con " + str(self.N) + " entradas"
+        print "Resultados:"
+        print "Miss rate:               %0.2f" %missRate + "%%  (%d" %pageFaults + " misses out of %d" %totalLineas + " references)"
+        print "Miss rate (warm cache):  %0.2f" %missWarm + "%%  (%d" %mW + " misses out of %d" %totalLineas + "-%d" %self.N + " references)"
+        #print "Page Faults:  " + " " + str(pageFaults)
