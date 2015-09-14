@@ -1,7 +1,5 @@
 __author__ = 'cesar17'
 from HashTable import *
-from collections import deque
-import itertools
 from DoubleLinkedList import *
 
 class Cache(object):
@@ -29,12 +27,14 @@ class Cache(object):
         clockHand = 0
         location = []
         hashTable = HashTable(self.M)
+        totalLineas = 0
         i = 0
         while i < self.N:
             location.append(PageTableEntry())
             i += 1
 
         for line in file:
+            totalLineas += 1
             line = line.rstrip('\n')
             if location[clockHand].getValidBit() == 1:
                 sMH = StringMH(line)
@@ -73,7 +73,14 @@ class Cache(object):
                         location[value].setRefBit(0)
                     else:
                         location[value].setRefBit(1)
-        print "Page Faults:  " + " " + str(pageFaults)
+        missRate = 100*(float(pageFaults)/totalLineas)
+        missWarm = 100*(float(pageFaults - self.N)/(totalLineas-self.N))
+        mW = pageFaults - self.N
+        print "Evaluando una cache CLOCK con " + str(self.N) + " entradas"
+        print "Resultados:"
+        print "Miss rate:               %0.2f" %missRate + "%%  (%d" %pageFaults + " misses out of %d" %totalLineas + " references)"
+        print "Miss rate (warm cache):  %0.2f" %missWarm + "%%  (%d" %mW + " misses out of %d" %totalLineas + "-%d" %self.N + " references)"
+        #print "Page Faults:  " + " " + str(pageFaults)
 
     # Implementacion de politica de reemplazo LRU  por ***HERNAN ULLON***
     def politicaLRU(self, file):
