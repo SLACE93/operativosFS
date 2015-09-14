@@ -2,6 +2,8 @@ __author__ = 'cesar17'
 from HashTable import *
 from collections import deque
 import itertools
+from DoubleLinkedList import *
+
 class Cache(object):
     def __init__(self, N):
         self.N = N      #Tamano de cache
