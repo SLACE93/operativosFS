@@ -109,3 +109,34 @@ class Cache(object):
         print "Miss rate:               %0.2f" %missRate + "%%  (%d" %pageFaults + " misses out of %d" %totalLineas + " references)"
         print "Miss rate (warm cache):  %0.2f" %missWarm + "%%  (%d" %mW + " misses out of %d" %totalLineas + "-%d" %self.N + " references)"
         #print "Page Faults:  " + " " + str(pageFaults)
+
+
+class PageTableEntry(object):
+
+    def __init__(self):
+        self.stringMH = None
+        self.refbit = 0
+        self.validbit = 0
+
+    def __eq__(self, other):
+        if type(other) is type(self):
+            return self.stringMH == other.stringMH
+        return False
+
+    def getStringMH(self):
+        return self.stringMH
+
+    def getRefBit(self):
+        return self.refbit
+
+    def getValidBit(self):
+        return self.validbit
+
+    def setStringMH(self, sMH):
+        self.stringMH = sMH
+
+    def setRefBit(self, value):
+        self.refbit = value
+
+    def setValidBit(self, value):
+        self.validbit =  value
