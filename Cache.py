@@ -67,3 +67,5 @@ class Cache(object):
         llena = False
         hashTable = HashTable(self.M)
         totalLineas = 0
+
+        for line in file:
