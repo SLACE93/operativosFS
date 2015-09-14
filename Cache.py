@@ -13,8 +13,10 @@ class Cache(object):
         clockHand = 0
         location = []
         hashTable = HashTable(self.M)
-        for i in range(self.N):
+        i = 0
+        while i < self.N:
             location.append(PageTableEntry())
+            i += 1
 
         for line in file:
             line = line.rstrip('\n')

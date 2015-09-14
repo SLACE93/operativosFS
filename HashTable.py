@@ -4,9 +4,11 @@ class HashTable(object):
     def __init__(self, M):
         self.M = M          # tamano del HashTable
         self.hashTable = []
-        for i in range(M):
+        i = 0
+        while i < self.M:
             sst = []   # sst lista para manejar las colisiones para un mismo hash
             self.hashTable.append(sst)
+            i += 1
 
     def hash(self, key):
         return (key.hashCode() & 0x7fffffff) % self.M
@@ -22,6 +24,19 @@ class HashTable(object):
                 if key == keyaux:
                     return keyvalue.getValue()
         return None
+
+    def updateValue(self, key, newvalue):
+        sst = self.hashTable[self.hash(key)]
+        self.updateValueInner(sst, key, newvalue)
+
+    def updateValueInner(self, sst, key, newvalue):
+        if sst:
+            for keyvalue in sst:
+                keyaux = keyvalue.getKey()
+                if key == keyaux:
+                    keyvalue.setValue(newvalue)
+                    break
+        #return None
 
     def deleteKey(self, key):
         sst = self.hashTable[self.hash(key)]
