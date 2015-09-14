@@ -58,3 +58,12 @@ class Cache(object):
                     else:
                         location[value].setRefBit(1)
         print "Page Faults:  " + " " + str(pageFaults)
+
+    # Implementación de política de reemplazo LRU  por ***HERNAN ULLON***
+    def politicaLRU(self, file):
+        location = DoubleLinkedList()
+        pageFaults = 0
+        indice = 0
+        llena = False
+        hashTable = HashTable(self.M)
+        totalLineas = 0
